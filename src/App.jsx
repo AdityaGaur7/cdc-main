@@ -61,7 +61,7 @@ function App() {
           element:<LoginPage/> 
         },
         {
-          path:"/verify",
+          path:"/dashboard",
           element:<DashBoard/>,
         },
       ]

@@ -67,7 +67,7 @@ export const Navbar = () => {
         </li>
         <li className="group">
           <NavLink
-            to="verify"
+            to="dashboard"
             className="hover:text-gray-300 transition-colors duration-300 block p-2"
           >
             DashBoard
@@ -145,6 +145,14 @@ export const Navbar = () => {
               Contact
             </NavLink>
           </li>
+          <li className="group">
+          <NavLink
+            to="createTeam"
+            className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
+          >
+            CreateTeam
+          </NavLink>
+        </li>
           <li>
             <NavLink
               to="/login"
