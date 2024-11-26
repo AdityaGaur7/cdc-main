@@ -92,7 +92,7 @@ const CreateTeam = () => {
   const handleAddMember = async (e) => {
     e.preventDefault();
 
-    if (team.members.length + 1 > 4) {
+    if (team.members.length + 1 > 3) {
       setError('A team cannot have more than 4 members.');
       return;
     }
