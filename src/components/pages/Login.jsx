@@ -19,7 +19,7 @@ const LoginForm = () => {
 
     try {
 
-      const response = await fetch('https://cdc-finalserver-rose.vercel.app/api/auth/login', {
+      const response = await fetch('https://cdc-finalserver.vercel.app/api/auth/login', {
 
         method: 'POST',
         headers: {
