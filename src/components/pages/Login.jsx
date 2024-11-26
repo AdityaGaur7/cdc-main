@@ -18,7 +18,7 @@ const LoginForm = () => {
     const { email, password } = formData;
 
     try {
-      const response = await fetch('https://cdc-finalserver.vercel.app/', {
+      const response = await fetch('https://cdc-finalserver.vercel.app/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

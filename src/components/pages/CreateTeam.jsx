@@ -20,7 +20,7 @@ const CreateTeam = () => {
         const user = JSON.parse(localdata);
         const token = user.token;
 
-        const response = await fetch('https://cdc-finalserver.vercel.app/', {
+        const response = await fetch('https://cdc-finalserver.vercel.app/teams', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,7 +47,7 @@ const CreateTeam = () => {
       const user = JSON.parse(localdata);
       const token = user.token;
 
-      const response = await fetch('https://cdc-finalserver.vercel.app/', {
+      const response = await fetch('https://cdc-finalserver.vercel.app/teams', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const CreateTeam = () => {
       setTeamName('');
 
       // Fetch the newly created team details
-      const teamResponse = await fetch(`https://cdc-finalserver.vercel.app/`, {
+      const teamResponse = await fetch(`https://cdc-finalserver.vercel.app/teams`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ const CreateTeam = () => {
       const user = JSON.parse(localdata);
       const token = user.token;
 
-      const response = await fetch('https://cdc-finalserver.vercel.app/', {
+      const response = await fetch('https://cdc-finalserver.vercel.app/addMembers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ const CreateTeam = () => {
       setMember({ name: '', email: '', phone: '' });
 
       // Refresh team data
-      const teamResponse = await fetch(`https://cdc-finalserver.vercel.app/`, {
+      const teamResponse = await fetch(`https://cdc-finalserver.vercel.app/teams`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
