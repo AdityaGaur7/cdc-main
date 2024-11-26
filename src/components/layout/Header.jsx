@@ -91,41 +91,7 @@ export const Navbar = () => {
         >
           LOGIN
         </NavLink>
-        <NavLink
-          to="/register"
-          className="text-lg font-roboto-slab font-semibold hover:text-gray-300 transition-colors duration-300 block p-2"
-        >
-          SIGNUP
-        </NavLink>
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isDarkMode}
-            onChange={handleToggle}
-            className="sr-only"
-          />
-          <div
-            className={`w-14 h-8 rounded-full shadow-inner relative transition duration-300 ${
-              isDarkMode
-                ? "bg-gradient-to-r from-blue-600 to-purple-600"
-                : "bg-gradient-to-r from-yellow-400 to-sky-500"
-            }`}
-          >
-            <span
-              className={`absolute top-1 left-1 w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center ${
-                isDarkMode
-                  ? "translate-x-6 bg-black shadow-blue-500/50"
-                  : "bg-white"
-              }`}
-            >
-              {isDarkMode ? (
-                <FaMoon className="text-blue-300" size={14} />
-              ) : (
-                <FaSun className="text-yellow-500" size={14} />
-              )}
-            </span>
-          </div>
-        </label>
+    
       </div>
 
       {/* Mobile Menu Button */}

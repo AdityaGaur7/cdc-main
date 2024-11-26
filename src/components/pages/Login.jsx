@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import { NavLink } from "react-router-dom";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -134,10 +135,13 @@ const LoginForm = () => {
         </form>
         {/* Footer */}
         <p className="mt-4 text-sm text-2xl text-center text-black text-bold">
-          Don’t have an account?{' '}
-          <a href="#" className="text-blue-500 hover:underline text-bold">
-            Sign Up
-          </a>
+          Don’t have an account?{' '}  
+          <NavLink
+              to="/register"
+              className="text-blue-500 hover:underline text-bold"
+            >
+                 Sign Up
+            </NavLink>
         </p>
       </div>
     </div>
