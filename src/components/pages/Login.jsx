@@ -18,7 +18,9 @@ const LoginForm = () => {
     const { email, password } = formData;
 
     try {
+
       const response = await fetch('https://cdc-finalserver-rose.vercel.app/api/auth/login', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

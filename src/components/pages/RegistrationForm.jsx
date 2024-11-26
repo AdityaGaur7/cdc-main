@@ -25,7 +25,9 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
+
       const response = await fetch('https://cdc-finalserver-rose.vercel.app/api/auth/signup', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
