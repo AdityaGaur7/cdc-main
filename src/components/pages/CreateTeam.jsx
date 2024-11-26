@@ -21,7 +21,7 @@ const CreateTeam = () => {
         const token = user.token;
 
 
-        const response = await fetch('https://cdc-finalserver-rose.vercel.app/api/teams', {
+        const response = await fetch('https://cdc-finalserver.vercel.app/api/teams', {
 
           method: 'GET',
           headers: {
@@ -49,7 +49,7 @@ const CreateTeam = () => {
       const user = JSON.parse(localdata);
       const token = user.token;
 
-      const response = await fetch('https://cdc-finalserver-rose.vercel.app/api/teams', {
+      const response = await fetch('https://cdc-finalserver.vercel.app/api/teams', {
 
         method: 'POST',
         headers: {
@@ -71,7 +71,7 @@ const CreateTeam = () => {
 
       // Fetch the newly created team details
 
-      const teamResponse = await fetch(`https://cdc-finalserver-rose.vercel.app/api/teams`, {
+      const teamResponse = await fetch(`https://cdc-finalserver.vercel.app/api/teams`, {
 
         method: 'GET',
         headers: {
