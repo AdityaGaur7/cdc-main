@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +10,8 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  
+  const navigate = useNavigate(); // Initialize the navigation hook
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,11 +44,14 @@ const LoginForm = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('user', JSON.stringify(data)); // Store user data in localStorage
 
       setMessage('Login successful!');
       setError('');
       setFormData({ email: '', password: '' });
+
+      // Redirect to dashboard
+      navigate('/dashboard');
     } catch (err) {
       setMessage('');
       setError('Invalid credentials');
@@ -135,13 +140,13 @@ const LoginForm = () => {
         </form>
         {/* Footer */}
         <p className="mt-4 text-sm text-2xl text-center text-black text-bold">
-          Don’t have an account?{' '}  
+          Don’t have an account?{' '}
           <NavLink
-              to="/register"
-              className="text-blue-500 hover:underline text-bold"
-            >
-                 Sign Up
-            </NavLink>
+            to="/register"
+            className="text-blue-500 hover:underline text-bold"
+          >
+            Sign Up
+          </NavLink>
         </p>
       </div>
     </div>
