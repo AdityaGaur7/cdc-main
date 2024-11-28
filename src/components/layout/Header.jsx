@@ -5,6 +5,13 @@ import { NavLink } from "react-router-dom";
 export const Navbar = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+
+  useEffect(() => {
+    // Check login status
+    const user = JSON.parse(localStorage.getItem("user"));
+    setIsLoggedIn(!!user); // If user exists, set to true
+  }, []);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -65,14 +72,16 @@ export const Navbar = () => {
             Contact
           </NavLink>
         </li>
-        <li className="group">
-          <NavLink
-            to="verify"
-            className="hover:text-gray-300 transition-colors duration-300 block p-2"
-          >
-            DashBoard
-          </NavLink>
-        </li>
+        {isLoggedIn && ( // Conditionally render Dashboard if logged in
+          <li className="group">
+            <NavLink
+              to="dashboard"
+              className="hover:text-gray-300 transition-colors duration-300 block p-2"
+            >
+              Dashboard
+            </NavLink>
+          </li>
+        )}
         <li className="group">
           <NavLink
             to="createTeam"
@@ -85,47 +94,14 @@ export const Navbar = () => {
 
       {/* Login, Signup, and Dark Mode Toggle */}
       <div className="hidden lg:flex items-center space-x-4">
-        <NavLink
-          to="/login"
-          className="text-lg font-roboto-slab font-semibold hover:text-gray-300 transition-colors duration-300 block p-2"
-        >
-          LOGIN
-        </NavLink>
-        <NavLink
-          to="/register"
-          className="text-lg font-roboto-slab font-semibold hover:text-gray-300 transition-colors duration-300 block p-2"
-        >
-          SIGNUP
-        </NavLink>
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isDarkMode}
-            onChange={handleToggle}
-            className="sr-only"
-          />
-          <div
-            className={`w-14 h-8 rounded-full shadow-inner relative transition duration-300 ${
-              isDarkMode
-                ? "bg-gradient-to-r from-blue-600 to-purple-600"
-                : "bg-gradient-to-r from-yellow-400 to-sky-500"
-            }`}
+        {!isLoggedIn && ( // Show login only if not logged in
+          <NavLink
+            to="/login"
+            className="text-lg font-roboto-slab font-semibold hover:text-gray-300 transition-colors duration-300 block p-2"
           >
-            <span
-              className={`absolute top-1 left-1 w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center ${
-                isDarkMode
-                  ? "translate-x-6 bg-black shadow-blue-500/50"
-                  : "bg-white"
-              }`}
-            >
-              {isDarkMode ? (
-                <FaMoon className="text-blue-300" size={14} />
-              ) : (
-                <FaSun className="text-yellow-500" size={14} />
-              )}
-            </span>
-          </div>
-        </label>
+            LOGIN
+          </NavLink>
+        )}
       </div>
 
       {/* Mobile Menu Button */}
@@ -165,67 +141,40 @@ export const Navbar = () => {
           </li>
           <li className="group">
             <NavLink
-              to="verify"
-              className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
-            >
-              Verify
-            </NavLink>
-          </li>
-          <li className="group">
-            <NavLink
               to="contact"
               className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
             >
               Contact
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/login"
-              className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
-            >
-              LOGIN
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/register"
-              className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
-            >
-              SIGNUP
-            </NavLink>
-          </li>
-          <li>
-            <label className="flex justify-center items-center cursor-pointer py-2">
-              <input
-                type="checkbox"
-                checked={isDarkMode}
-                onChange={handleToggle}
-                className="sr-only"
-              />
-              <div
-                className={`w-14 h-8 rounded-full shadow-inner relative transition duration-300 ${
-                  isDarkMode
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600"
-                    : "bg-gradient-to-r from-yellow-400 to-sky-500"
-                }`}
+          {isLoggedIn && ( // Conditionally render Dashboard if logged in
+            <li className="group">
+              <NavLink
+                to="dashboard"
+                className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
               >
-                <span
-                  className={`absolute top-1 left-1 w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center ${
-                    isDarkMode
-                      ? "translate-x-6 bg-black shadow-blue-500/50"
-                      : "bg-white"
-                  }`}
-                >
-                  {isDarkMode ? (
-                    <FaMoon className="text-blue-300" size={14} />
-                  ) : (
-                    <FaSun className="text-yellow-500" size={14} />
-                  )}
-                </span>
-              </div>
-            </label>
+                Dashboard
+              </NavLink>
+            </li>
+          )}
+          <li className="group">
+            <NavLink
+              to="createTeam"
+              className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
+            >
+              CreateTeam
+            </NavLink>
           </li>
+          {!isLoggedIn && ( // Show login only if not logged in
+            <li>
+              <NavLink
+                to="/login"
+                className="text-white text-lg font-roboto-slab hover:text-gray-300 transition-colors duration-300 block py-2"
+              >
+                LOGIN
+              </NavLink>
+            </li>
+          )}
         </ul>
       )}
     </nav>

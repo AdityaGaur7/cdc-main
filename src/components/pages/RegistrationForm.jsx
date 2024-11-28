@@ -26,7 +26,7 @@ const RegistrationForm = () => {
 
     try {
 
-      const response = await fetch('https://cdc-finalserver-rose.vercel.app/api/auth/signup', {
+      const response = await fetch('https://cdc-finalserver.vercel.app/api/auth/signup', {
 
         method: 'POST',
         headers: {
