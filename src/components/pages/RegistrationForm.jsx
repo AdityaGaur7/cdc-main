@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import API_BASE_URL from "../../config/apiConfig";
+import { useNavigate } from 'react-router-dom'; 
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -8,9 +10,12 @@ const RegistrationForm = () => {
     phone: '',
     password: '',
     role: 'User', // Default role
+    college: 'MMMUT', // Default college
+    universityRollNo: '', // University roll number
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,9 +30,7 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
-
-      const response = await fetch('https://cdc-finalserver.vercel.app/api/auth/signup', {
-
+      const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,6 +41,8 @@ const RegistrationForm = () => {
           phone: formData.phone,
           password: formData.password,
           role: formData.role,
+          college: formData.college,
+          universityRollNo: formData.universityRollNo,
         }),
       });
 
@@ -52,10 +57,17 @@ const RegistrationForm = () => {
         firstName: '',
         lastName: '',
         email: '',
-        password: '',
         phone: '',
-        role: 'User', // Reset role to default
+        password: '',
+        role: 'User',
+        college: 'MMMUT', // Reset default college
+        universityRollNo: '',
       });
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+
     } catch (err) {
       setMessage('');
       setError(err.message || 'Failed to register');
@@ -106,6 +118,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
+            
             <div className="flex items-center space-x-4">
               <label className="text-gray-300 w-1/4">PASSWORD:</label>
               <input
@@ -127,6 +140,30 @@ const RegistrationForm = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="Phone No:"
+                className="w-3/4 px-3 py-2 border border-gray-600 bg-transparent rounded-md text-white focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <label className="text-gray-300 w-1/4">COLLEGE:</label>
+              <input
+                type="text"
+                name="college"
+                value={formData.college}
+                onChange={handleChange}
+                placeholder="College"
+                className="w-3/4 px-3 py-2 border border-gray-600 bg-transparent rounded-md text-white focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <label className="text-gray-300 w-1/4">UNIVERSITY ROLL NO:</label>
+              <input
+                type="text"
+                name="universityRollNo"
+                value={formData.universityRollNo}
+                onChange={handleChange}
+                placeholder="University Roll Number"
                 className="w-3/4 px-3 py-2 border border-gray-600 bg-transparent rounded-md text-white focus:outline-none focus:border-blue-500"
               />
             </div>

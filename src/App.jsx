@@ -1,73 +1,98 @@
-import DashBoard from "./components/pages/dashboard"
-import ContactForm from "./components/pages/contactus"
-import LandingPage from "./components/pages/LandingPage/Landingpage"
-import RegistrationForm from "./components/pages/RegistrationForm"
-import OurEvents from "./components/pages/Ourevent"
-import { Navbar } from "./components/Navbar/Navbar"
-import { Footer } from "./components/Footer/Footer"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { AppLayout } from "./components/layout/AppLayout"
-import Event from "./components/pages/algoolympics"
-import LoginPage  from "./components/pages/Login"
-import Registration  from "./components/pages/RegistrationForm"
-import CreateTeam  from "./components/pages/CreateTeam"
-import AddMember  from "./components/pages/AddMembers"
+import { useEffect, useState } from "react";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import DashBoard from "./components/pages/dashboard";
+import ContactForm from "./components/pages/contactus";
+import LandingPage from "./components/pages/LandingPage/Landingpage";
+import RegistrationForm from "./components/pages/RegistrationForm";
+import OurEvents from "./components/pages/Ourevent";
+import { AppLayout } from "./components/layout/AppLayout";
+import Event from "./components/pages/algoolympics";
+import LoginPage from "./components/pages/Login";
+import Registration from "./components/pages/RegistrationForm";
+import CreateTeam from "./components/pages/CreateTeam";
+import Admin from "./components/pages/Admin/AdminPanel";
+import Profile from "./components/pages/Profile";
+import RoleProtectedRoute from "./ProtectedRoute";
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check login status
+    const user = JSON.parse(localStorage.getItem("user"));
+    setIsLoggedIn(!!user); // If user exists, set to true
+  }, []);
+
   const router = createBrowserRouter([
     {
-      path:"/",
-      element:<AppLayout/>,
-      // errorElement:<ErrorPage/>,
-      children:[
+      path: "/",
+      element: <AppLayout />,
+      children: [
         {
-          path:"/",
-          element:<LandingPage/>
+          path: "/",
+          element: <LandingPage />,
         },
         {
-          path:"/events",
-          element:<OurEvents/>
+          path: "/events",
+          element: <OurEvents />,
         },
         {
-          path:"/events/eve",
-          element:<Event/>
+          path: "/events/eve",
+          element: <Event />,
         },
         {
-          path:"/team",
-          element:<LandingPage/>,
-          // loader:getmovieData,
+          path: "/admin",
+          element: (
+            <RoleProtectedRoute requiredRole={["Superadmin"]}>
+              <Admin />
+            </RoleProtectedRoute>
+          ),
         },
         {
-          path:"/createTeam",
-          element:<CreateTeam/>,
-          // loader:getmovieData,
+          path: "/team",
+          element: (
+            <RoleProtectedRoute requiredRole={["Team Leader"]}>
+              <LandingPage />
+            </RoleProtectedRoute>
+          ),
         },
         {
-          path:"/addmem",
-          element:<AddMember/>,
-          // loader:getmovieData,
+          path: "/createTeam",
+          element: (
+            <RoleProtectedRoute requiredRole={["Team Leader"]}>
+              <CreateTeam />
+            </RoleProtectedRoute>
+          ),
         },
         {
-          path:"/register",
-          element:<Registration/>,
-          // loader:getmovieData,
+          path: "/signup",
+          element: <Registration />,
         },
+        {
+          path: "/contact",
+          element: <ContactForm />,
+        },
+        {
+          path: "/login",
+          element: <LoginPage />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
+        {
+          path: "/dashboard",
+          element: (
+            
+              <DashBoard />
         
-        {
-          path:"/contact",
-          element:<ContactForm/> 
+          ),
         },
-        {
-          path:"/login",
-          element:<LoginPage/> 
-        },
-        {
-          path:"/dashboard",
-          element:<DashBoard/>,
-        },
-      ]
-     },
-   ]);
-   return <RouterProvider router={router}/>
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;

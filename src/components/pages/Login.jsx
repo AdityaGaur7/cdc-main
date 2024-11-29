@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import API_BASE_URL from "../../config/apiConfig";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Used for navigation after login
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +27,7 @@ const LoginForm = () => {
 
     try {
       const response = await fetch(
-        'https://cdc-finalserver.vercel.app/api/auth/login',
+        `${API_BASE_URL}/api/auth/login`,
         {
           method: 'POST',
           headers: {
@@ -50,7 +50,8 @@ const LoginForm = () => {
       setFormData({ email: '', password: '' });
 
       // Redirect to dashboard
-      navigate('/dashboard');
+      window.location.href = '/';
+      
     } catch (err) {
       setMessage('');
       setError('Invalid credentials');
@@ -108,6 +109,7 @@ const LoginForm = () => {
           </div>
           {message && <p className="text-green-500 text-center">{message}</p>}
           {error && <p className="text-red-500 text-center">{error}</p>}
+         <p className='d-flex justify-center'><a href="/signup">Create a new account</a></p> 
           <div className="mt-6">
             <button
               type="submit"
