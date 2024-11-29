@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import API_BASE_URL from "../../config/apiConfig";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPhone,
@@ -7,8 +8,12 @@ import {
   faGraduationCap,
   faBuildingColumns,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios"; // Assuming you're using axios for API calls
 
 const DashBoard = () => {
+  const [team, setTeam] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const cardData = [
     { icon: faPhone, label: "Contact", value: "1234567890" },
     { icon: faEnvelope, label: "Email", value: "abc@mmmut.ac.in" },
@@ -16,17 +21,37 @@ const DashBoard = () => {
     { icon: faGraduationCap, label: "Graduation Year", value: "2027" },
   ];
 
+  // Fetch team details
+  useEffect(() => {
+    const fetchTeamDetails = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/team`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+        setTeam(response.data.team);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching team details", error);
+        setLoading(false);
+      }
+    };
+
+    fetchTeamDetails();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-       {/* Main Content */}
-      <div className=" bg-gray-900 min-h-screen flex flex-col items-center py-10 space-y-16 relative z-18">
-      <div
-        className="absolute inset-0 blur-3xl z-[0]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(23,20,27,1) 0%, rgba(58,94,121,1) 66%, rgba(42,58,78,1) 90%)",
-        }}
-      />
+      {/* Main Content */}
+      <div className="bg-gray-900 min-h-screen flex flex-col items-center py-10 space-y-16 relative z-18">
+        <div
+          className="absolute inset-0 blur-3xl z-[0]"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(23,20,27,1) 0%, rgba(58,94,121,1) 66%, rgba(42,58,78,1) 90%)",
+          }}
+        />
         <h1 className="text-center text-4xl font-bold mt-2 text-white mb-4 z-[8]">
           DASHBOARD
         </h1>
@@ -83,10 +108,32 @@ const DashBoard = () => {
           className="flex flex-col w-11/12 items-center mt-10 space-y-4 z-[8]"
         >
           <h1 className="text-white text-2xl">Teams</h1>
-          <div className="w-full h-[30vh] bg-gray-800 p-10 border border-[#5FA4EA] rounded-md "></div>
+          {/* Table to show team members */}
+          <table className="table-auto border-collapse text-white">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border">Member Name</th>
+                <th className="px-4 py-2 border">Email</th>
+                <th className="px-4 py-2 border">Phone</th>
+                <th className="px-4 py-2 border">Roll No</th>
+                <th className="px-4 py-2 border">Codeforces Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {team?.members?.map((member) => (
+                <tr key={member._id}>
+                  <td className="px-4 py-2 border">{member.name}</td>
+                  <td className="px-4 py-2 border">{member.email}</td>
+                  <td className="px-4 py-2 border">{member.phone}</td>
+                  <td className="px-4 py-2 border">{member.universityRollNo}</td>
+                  <td className="px-4 py-2 border">{member.codeforceHandle}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </motion.div>
 
-        {/* Events Section */}
+        {/* Other sections */}
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
