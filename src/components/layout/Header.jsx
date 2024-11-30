@@ -8,7 +8,7 @@ export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [showDropdown, setShowDropdown] = useState(false); // State for dropdown visibility
-  const [userRole, setUserRole] = useState(null); // State for user role
+  const [userRole, setUserRole] = useState(''); // State for user role
 
   useEffect(() => {
     // Check login status
@@ -17,10 +17,10 @@ export const Navbar = () => {
 
     // Decode the token and get the role
     const decodedRole = decodeTokenAndGetRole();
-    if (decodedRole && decodedRole.role) {
+   
+   
+    if (decodedRole) {
       setUserRole(decodedRole.role); // Store the role in state
-      
-      
       
     }
   }, []);
@@ -45,7 +45,7 @@ export const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user"); // Remove user from local storage
     setIsLoggedIn(false); // Update state
-    window.location.reload(); // Reload the page
+    window.location.href = "/"; // Redirect to the home page
   };
 
   const toggleDropdown = () => {
@@ -133,12 +133,14 @@ export const Navbar = () => {
                 >
                   Profile
                 </NavLink>
-                <NavLink
+                { userRole == 'Team Leader' && 
+                  <NavLink
                   to="/createTeam"
                   className="block px-4 py-2 hover:bg-gray-200"
                 >
                   Team
                 </NavLink>
+                }
                 <button
                   onClick={handleLogout}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200"

@@ -20,13 +20,17 @@ const DashBoard = () => {
     { icon: faBuildingColumns, label: "College", value: "MMMUT GKP" },
     { icon: faGraduationCap, label: "Graduation Year", value: "2027" },
   ];
-
+  const localdata = localStorage.getItem("user");
+  const user = JSON.parse(localdata);
+  const token = user.token;
   // Fetch team details
   useEffect(() => {
     const fetchTeamDetails = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/team`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
-        setTeam(response.data.team);
+        const response = await axios.get(`${API_BASE_URL}/api/superadmin/teams`, { headers: { Authorization: `Bearer ${token}` } });
+        const sortedTeams = response.data.sort((a, b) => a.ranking - b.ranking);
+        setTeam(sortedTeams);
+        
         setLoading(false);
       } catch (error) {
         console.error("Error fetching team details", error);
@@ -112,21 +116,15 @@ const DashBoard = () => {
           <table className="table-auto border-collapse text-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Member Name</th>
-                <th className="px-4 py-2 border">Email</th>
-                <th className="px-4 py-2 border">Phone</th>
-                <th className="px-4 py-2 border">Roll No</th>
-                <th className="px-4 py-2 border">Codeforces Handle</th>
+              <th className="px-4 py-2 border">Ranking</th>
+              <th className="px-4 py-2 border">Team Name</th>
               </tr>
             </thead>
             <tbody>
-              {team?.members?.map((member) => (
+              {team?.map((member) => (
                 <tr key={member._id}>
+                  <td className="px-4 py-2 border">{member.ranking}</td>
                   <td className="px-4 py-2 border">{member.name}</td>
-                  <td className="px-4 py-2 border">{member.email}</td>
-                  <td className="px-4 py-2 border">{member.phone}</td>
-                  <td className="px-4 py-2 border">{member.universityRollNo}</td>
-                  <td className="px-4 py-2 border">{member.codeforceHandle}</td>
                 </tr>
               ))}
             </tbody>
@@ -134,7 +132,7 @@ const DashBoard = () => {
         </motion.div>
 
         {/* Other sections */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
@@ -142,10 +140,10 @@ const DashBoard = () => {
         >
           <h1 className="text-white text-2xl">Events</h1>
           <div className="w-full h-[30vh] bg-gray-800 p-10 border border-[#5FA4EA] rounded-md"></div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Score Section */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
@@ -153,7 +151,7 @@ const DashBoard = () => {
         >
           <h1 className="text-white text-2xl">Your Score</h1>
           <div className="w-full h-[30vh] bg-gray-800 p-10 border border-[#5FA4EA] rounded-md"></div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </>
   );

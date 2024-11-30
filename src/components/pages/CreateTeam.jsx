@@ -63,6 +63,8 @@ const CreateTeam = () => {
       });
 
       if (!response.ok) {
+        console.log(response);
+        
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create team");
       }

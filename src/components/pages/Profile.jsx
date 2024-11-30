@@ -4,6 +4,7 @@ import API_BASE_URL from '../../config/apiConfig';
 
 const AdminProfile = () => {
   const [admin, setAdmin] = useState(null);
+  const [team, setTeam] = useState(null); // Add state for team details
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -11,9 +12,23 @@ const AdminProfile = () => {
     password: '',
   });
 
-  const localdata = localStorage.getItem("user");
+  const localdata = localStorage.getItem('user');
   const user = JSON.parse(localdata);
   const token = user.token;
+
+  // Fetch team details
+  const fetchTeamDetails = async (teamId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/teams/${teamId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTeam(response.data.team);
+      console.log(response.data.team);
+      
+    } catch (error) {
+      console.error('Error fetching team details:', error);
+    }
+  };
 
   // Fetch admin details
   const fetchAdminDetails = async () => {
@@ -21,12 +36,23 @@ const AdminProfile = () => {
       const response = await axios.get(`${API_BASE_URL}/api/superadmin/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setAdmin(response.data);
+
+      const adminData = response.data;
+      setAdmin(adminData);
+   console.log(adminData);
+   
       setFormData({
-        name: response.data.name,
-        email: response.data.email,
+        name: adminData.name,
+        email: adminData.email,
         password: '', // Do not fetch password for security
       });
+
+      // Fetch team details if admin has a team
+      if (adminData.teamId) {
+        console.log(adminData.teamId);
+        
+        fetchTeamDetails(adminData.teamId);
+      }
     } catch (error) {
       console.error('Error fetching admin details:', error);
     }
@@ -78,6 +104,26 @@ const AdminProfile = () => {
               <div className="mb-4">
                 <strong>Email:</strong> {admin.email}
               </div>
+
+              {team && (
+                <div className="mb-4">
+                  <h2 className="text-xl font-semibold">Team Details</h2>
+                  <p>
+                    <strong>Team Name:</strong> {team.name}
+                  </p>
+                  <p>
+                    <strong>Members:</strong>
+                  </p>
+                  <ul className="list-disc pl-6">
+                    {team.members.map((member) => (
+                      <li key={member._id}>
+                        {member.name} ({member.email})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <button
                 onClick={() => setIsEditing(true)}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -116,20 +162,6 @@ const AdminProfile = () => {
                   required
                 />
               </div>
-
-              {/* <div className="mb-4">
-                <label className="block text-sm font-medium mb-1" htmlFor="password">
-                  Password (Leave blank to keep unchanged)
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div> */}
 
               <div className="flex items-center justify-between">
                 <button
